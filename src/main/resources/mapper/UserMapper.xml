@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yty.dao.UserMapper">
+
+    <resultMap id="userMap" type="com.yty.entity.User">
+        <id column="pk_id" property="id" />
+        <result property="username" column="idx_name" />
+        <result property="head" column="idx_head" />
+        <result property="sex" column="idx_sex" />
+        <result property="email" column="idx_email" />
+        <result property="phone" column="idx_tel" />
+        <result property="account" column="idx_account" />
+        <result property="password" column="idx_password"/>
+        <result property="ID" column="idx_ID" />
+        <result property="birth" column="idx_birth" />
+        <result property="pravitekey" column="idx_privatekey"/>
+        <result property="status" column="idx_status"/>
+    </resultMap>
+    <select id="login" parameterType="com.yty.entity.User" resultMap="userMap">
+        select *
+        from user
+        where idx_account = #{account}
+          and idx_password = #{password};
+    </select>
+
+    <insert id="register" parameterType="com.yty.entity.User">
+        insert into user (idx_email, idx_account, idx_password, idx_tel)
+        values (#{email}, #{account}, #{password}, #{phone})
+    </insert>
+
+    <select id="getUser" parameterType="java.lang.String" resultMap="userMap">
+        select *
+        from user
+        where idx_email = #{name }
+           or idx_tel = #{name };
+    </select>
+
+
+</mapper>
