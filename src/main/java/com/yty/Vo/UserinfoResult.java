@@ -1,4 +1,4 @@
-package com.yty.res;
+package com.yty.Vo;
 
 import lombok.Data;
 

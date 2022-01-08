@@ -26,4 +26,28 @@ public interface UserService {
      * @return
      */
     User getUserByName(String name);
+
+    /**
+     * 发送验证码
+     * @param email
+     * @return
+     */
+    String sendEmail(String email);
+
+    /**
+     * 随机生成验证码
+     * @return
+     */
+    String makeCode();
+
+
+    /**
+     * 校验注册信息
+     * @param email
+     * @param tel
+     * @param password
+     * @param name
+     * @return
+     */
+    Integer verifyRegisterInfo(String email, String tel, String password, String name,String code);
 }

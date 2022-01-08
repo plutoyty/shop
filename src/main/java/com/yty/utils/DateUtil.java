@@ -20,6 +20,6 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        DateUtil.ptfDate();
+        System.out.println(DateUtil.ptfDate());
     }
 }

@@ -17,4 +17,5 @@ public class User {
     private String pravitekey;
     private String account;
     private String ID; //身份证
+    private String date;
 }
