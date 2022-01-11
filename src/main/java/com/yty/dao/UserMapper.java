@@ -28,4 +28,11 @@ public interface UserMapper {
       * @return
       */
      User getUser(String name);
+
+     /**
+      * 修改个人信息
+      * @param user
+      * @return
+      */
+     boolean changUserInfo(User user);
 }

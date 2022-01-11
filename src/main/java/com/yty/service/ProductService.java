@@ -2,6 +2,8 @@ package com.yty.service;
 
 import com.yty.entity.Product;
 
+import java.util.List;
+
 public interface ProductService {
 
     /**
@@ -11,5 +13,11 @@ public interface ProductService {
      */
     Product getProductInfo(String id);
 
+    /**
+     * 获取id种类的商品
+     * @param id
+     * @return
+     */
+    List<Product> getProductList(String id);
 
 }

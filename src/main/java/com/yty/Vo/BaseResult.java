@@ -7,6 +7,7 @@ import lombok.Data;
  * 200 失败
  */
 @Data
-public class LogoutResult {
-    private String status;
+public class BaseResult {
+    private Integer status;
+    private String msg;
 }

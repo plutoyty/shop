@@ -36,5 +36,8 @@
            or idx_tel = #{name };
     </select>
 
+    <update id="changUserInfo" parameterType="com.yty.entity.User">
+        update user set idx_email=#{email},idx_birth=#{birth},idx_sex=#{sex} where pk_id=#{id};
+    </update>
 
 </mapper>

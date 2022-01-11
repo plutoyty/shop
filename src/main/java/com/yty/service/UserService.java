@@ -50,4 +50,11 @@ public interface UserService {
      * @return
      */
     Integer verifyRegisterInfo(String email, String tel, String password, String name,String code);
+
+    /**
+     * 修改个人信息
+     * @param user
+     * @return
+     */
+    boolean changeUserInfo(User user);
 }

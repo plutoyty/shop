@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yty.dao.AddressMapper">
+    <resultMap id="address_map" type="com.yty.entity.Address">
+        <id property="id" column="pk_id" />
+        <result property="region" column="idx_region"/>
+        <result property="detail" column="idx_detail"/>
+        <result property="postalCode" column="idx_postalCode"/>
+        <result property="name" column="idx_name"/>
+        <result property="tel" column="idx_tel"/>
+        <result property="isDefault" column="idx_default"/>
+        <result property="status" column="idx_status"/>
+        <result property="alias" column="idx_alias"/>
+    </resultMap>
+
+    <select id="getAllAddress" parameterType="java.lang.String" resultMap="address_map">
+        select * from t_address where idx_user_email=#{email}
+    </select>
+
+    <update id="setDefault" parameterType="java.lang.String">
+        update t_address
+            <set>
+                    idx_default=1
+            </set>
+            where pk_id=#{id}
+    </update>
+
+    <update id="cancelDefault" parameterType="java.lang.String">
+        update t_address set
+                idx_default=0
+        where idx_user_email=#{email} and idx_default=1;
+    </update>
+    <insert id="addAddress" parameterType="com.yty.entity.Address">
+        insert into t_address
+            (idx_region,idx_detail,idx_postalCode,idx_name,idx_tel,idx_alias,idx_user_id,idx_user_email)
+        values
+               (#{region},#{detail},#{postalCode},#{name},#{tel},#{alias},#{id},#{email})
+    </insert>
+</mapper>

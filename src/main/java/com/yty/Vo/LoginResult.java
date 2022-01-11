@@ -1,6 +1,7 @@
 package com.yty.Vo;
 
 import com.yty.entity.LoginData;
+import com.yty.entity.User;
 import lombok.Data;
 
 /**
@@ -13,5 +14,7 @@ import lombok.Data;
 public class LoginResult {
     private int status=0;
     private String msg;
+    private String name;
+    private String email;
     private LoginData data;
 }

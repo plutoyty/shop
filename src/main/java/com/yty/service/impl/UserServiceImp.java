@@ -78,4 +78,21 @@ public class UserServiceImp implements UserService {
         }
         return 1010;
     }
+
+    @Override
+    public boolean changeUserInfo(User user) {
+        User user1 = userMapper.getUser(user.getEmail());
+        String sex = user.getSex();
+        if (sex.equals("男")){
+            user.setSex("1");
+        }else if (sex.equals("女")){
+            user.setSex("0");
+        }else {
+            user.setSex("-1");
+        }
+        user.setId(user1.getId());
+        return userMapper.changUserInfo(user);
+    }
+
+
 }

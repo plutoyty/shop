@@ -2,6 +2,7 @@ package com.yty.controller;
 
 import com.yty.Vo.CodeResult;
 import com.yty.Vo.RegResult;
+import com.yty.Vo.UserinfoResult;
 import com.yty.entity.LoginData;
 import com.yty.Vo.LoginResult;
 import com.yty.service.UserService;
@@ -11,7 +12,6 @@ import com.yty.utils.TokenUtil;
 import com.yty.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
@@ -51,11 +51,12 @@ public class LogRegController {
             result.setMsg("邮箱码错误");
             return result;
         }
-        User user1 = userService.getUserByName(user.getUsername());
-        System.out.println(user);
-        if (user1 != null) {
+        User user1 = userService.getUserByName(user.getEmail());
+        User user2 = userService.getUserByName(user.getPhone());
+        System.out.println(user1+""+user2);
+        if (user1 != null && user2!= null) {
             result.setStatus(2002);
-            result.setMsg("邮箱或密码已存在，注册失败!");
+            result.setMsg("邮箱或电话已被注册，注册失败!");
         } else {
             String userid = UUID.randomUUID().toString();
             Map<String, String> keyMap = RSAUtils.createKeys(512);
@@ -86,7 +87,7 @@ public class LogRegController {
 
     @RequestMapping("/login")
     public LoginResult Login(
-            @RequestBody User user1)
+             @RequestBody User user1)
             throws InvalidKeySpecException, NoSuchAlgorithmException {
         String username = user1.getUsername();
         String password = user1.getPassword();
@@ -103,6 +104,8 @@ public class LogRegController {
                 loginData.setToken(token);
                 result.setMsg("登录成功");
                 result.setData(loginData);
+                result.setEmail(user.getEmail());
+                result.setName(user.getUsername());
             } else {
                 result.setStatus(2007);
                 result.setMsg("密码错误");
@@ -117,7 +120,7 @@ public class LogRegController {
         try {
             String code = userService.sendEmail(email);
             System.out.println(code);
-            if (Integer.valueOf(code) <= 60){
+            if (Integer.valueOf(code) <= 60) {
                 codeResult.setStatus(300);
                 codeResult.setMsg(code);
                 return codeResult;
@@ -129,4 +132,5 @@ public class LogRegController {
         codeResult.setStatus(100);
         return codeResult;
     }
+
 }

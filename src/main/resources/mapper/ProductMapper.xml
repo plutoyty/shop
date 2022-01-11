@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yty.dao.ProductMapper">
+    <resultMap id="productMap" type="com.yty.entity.Product">
+        <id column="pk_id" property="id"/>
+        <result property="img" column="idx_imageHost"/>
+        <result property="price" column="idx_price"/>
+        <result property="oldPrice" column="idx_oldPrice"/>
+        <result property="title" column="idx_name"/>
+        <result property="subtitle" column="idx_subtitle"/>
+        <result property="shopId" column="idx_shopid"/>
+        <result property="category" column="idx_category"/>
+        <result property="sellCount" column="idx_sellcount"/>
+        <result property="repertory" column="idx_repertory"/>
+        <result property="pravitekey" column="idx_privatekey"/>
+        <result property="status" column="idx_status"/>
+    </resultMap>
+    <select id="getProduct" resultMap="productMap" parameterType="java.lang.String">
+        select *
+        from t_goods
+        where pk_id = #{id}
+    </select>
+
+    <select id="getProductList" resultMap="productMap" parameterType="java.lang.String">
+        select *
+        from t_goods
+        where idx_category_id=#{id};
+    </select>
+
+</mapper>
