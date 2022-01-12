@@ -35,6 +35,9 @@
         <property name="maxPoolSize" value="${jdbc.maxActive}"/>
         <!-- 最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止 -->
         <property name="maxIdleTime" value="${jdbc.maxIdle}"/>
+        <property name="minPoolSize" value="10" />
+        <property name="maxStatements" value="0" />
+        <property name="idleConnectionTestPeriod" value="1800" />
     </bean>
 
 

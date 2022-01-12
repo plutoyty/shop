@@ -4,7 +4,7 @@
 <mapper namespace="com.yty.dao.ProductMapper">
     <resultMap id="productMap" type="com.yty.entity.Product">
         <id column="pk_id" property="id"/>
-        <result property="img" column="idx_imageHost"/>
+        <result property="img" column="idx_image"/>
         <result property="price" column="idx_price"/>
         <result property="oldPrice" column="idx_oldPrice"/>
         <result property="title" column="idx_name"/>

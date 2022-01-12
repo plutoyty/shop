@@ -30,8 +30,23 @@ public class AddressImp implements AddressService {
     }
 
     @Override
-    public boolean addAddress(Address address, String email, String id) {
+    public boolean addAddress(Address address, String email, Integer id) {
         return addressMapper.addAddress(address,email,id);
+    }
+
+    @Override
+    public boolean delete(String email, String id) {
+        return addressMapper.deleteAddress(email,id);
+    }
+
+    @Override
+    public Address getDefault(String email) {
+        return addressMapper.getAddress(email);
+    }
+
+    @Override
+    public boolean updateAddress(Address address, String email,String id) {
+        return addressMapper.update(address,email,id);
     }
 
 

@@ -35,5 +35,28 @@ public interface AddressService {
      * @param id
      * @return
      */
-    boolean addAddress(Address address,String email,String id);
+    boolean addAddress(Address address,String email,Integer id);
+
+    /**
+     * 删除地址
+     * @param email
+     * @param id
+     * @return
+     */
+    boolean delete(String email, String id);
+
+    /**
+     * 获取默认地址
+     * @param email
+     * @return
+     */
+    Address getDefault(String email);
+
+    /**
+     * 修改地址
+     * @param address
+     * @param email
+     * @return
+     */
+    boolean updateAddress(Address address, String email,String id);
 }

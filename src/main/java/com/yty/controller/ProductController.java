@@ -59,6 +59,4 @@ public class ProductController {
         productListResult.setStatus(100);
         return productListResult;
     }
-
-
 }

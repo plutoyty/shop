@@ -35,5 +35,28 @@ public interface AddressMapper {
      * @param email
      * @return
      */
-    boolean addAddress(Address address, @Param("email")String email,@Param("id")String id);
+    boolean addAddress(@Param("address") Address address, @Param("email")String email,@Param("id")Integer id);
+
+    /**
+     * 删除地址
+     * @param email
+     * @param id
+     * @return
+     */
+    boolean deleteAddress(@Param("email") String email,@Param("id")String id);
+
+    /**
+     * 获取默认地址
+     * @param email
+     * @return
+     */
+    Address getAddress(String email);
+
+    /**
+     * 修改地址
+     * @param address
+     * @param email
+     * @return
+     */
+    boolean update(@Param("address") Address address,@Param("email") String email,@Param("id")String id);
 }

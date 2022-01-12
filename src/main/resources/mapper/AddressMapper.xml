@@ -15,13 +15,13 @@
     </resultMap>
 
     <select id="getAllAddress" parameterType="java.lang.String" resultMap="address_map">
-        select * from t_address where idx_user_email=#{email}
+        select * from t_address where idx_user_email=#{email} and idx_status!='-1'
     </select>
 
     <update id="setDefault" parameterType="java.lang.String">
         update t_address
             <set>
-                    idx_default=1
+                idx_default=1
             </set>
             where pk_id=#{id}
     </update>
@@ -35,6 +35,32 @@
         insert into t_address
             (idx_region,idx_detail,idx_postalCode,idx_name,idx_tel,idx_alias,idx_user_id,idx_user_email)
         values
-               (#{region},#{detail},#{postalCode},#{name},#{tel},#{alias},#{id},#{email})
+               (#{address.region},#{address.detail},#{address.postalCode},#{address.name},#{address.tel},#{address.alias},#{id},#{email})
     </insert>
+
+    <update id="deleteAddress" parameterType="java.lang.String">
+        update t_address
+            <set>
+                idx_status=-1
+            </set>
+            where idx_user_email=#{email} and pk_id=#{id}
+    </update>
+
+    <select id="getAddress" parameterType="java.lang.String">
+        select *
+        from t_address
+        where idx_user_email=#{email} and idx_default=1;
+    </select>
+    
+    <update id="update" parameterType="com.yty.entity.Address">
+        update t_address
+        <set>
+            idx_region=#{address.region},idx_detail=#{address.detail},
+            idx_postalCode=#{address.postalCode},idx_name=#{address.name},
+            idx_tel=#{address.tel},
+            <if test="address.alias!=null">idx_alias=#{address.alias}</if>
+
+        </set>
+        where idx_user_email=#{email} and idx_status=0 and pk_id=#{id}
+    </update>
 </mapper>

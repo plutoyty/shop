@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yty.dao.CarMapper">
+
+    <resultMap id="cartMap" type="com.yty.entity.CartItem">
+        <id column="pk_id" property="product.id"/>
+        <result property="product.img" column="idx_image"/>
+        <result property="product.price" column="idx_price"/>
+        <result property="product.oldPrice" column="idx_oldPrice"/>
+        <result property="product.title" column="idx_name"/>
+        <result property="product.subtitle" column="idx_subtitle"/>
+        <result property="product.shopId" column="idx_shopid"/>
+        <result property="product.category" column="idx_category"/>
+        <result property="product.sellCount" column="idx_sellcount"/>
+        <result property="product.repertory" column="idx_repertory"/>
+        <result property="product.pravitekey" column="idx_privatekey"/>
+        <result property="product.status" column="idx_status"/>
+        <result property="count" column="idx_count"/>
+        <result property="select" column="idx_select"/>
+    </resultMap>
+    <insert id="push" parameterType="java.lang.String">
+        insert into t_car (idx_goods_id,idx_user_id,idx_count,idx_select,idx_email)
+        values
+        (#{goodsId},#{id},1,#{select},#{email})
+    </insert>
+    
+    <update id="merge" parameterType="java.lang.String">
+        update t_car set
+        <if test="goodsId!=null">
+            idx_count=idx_count+1
+        </if>
+        where idx_goods_id=#{goodsId} and idx_user_id=#{userId}
+    </update>
+
+    <update id="minus" parameterType="java.lang.String">
+        update t_car set
+        <if test="goodsId!=null">
+            idx_count=idx_count-1
+        </if>
+        where idx_goods_id=#{goodsId} and idx_user_id=#{userId}
+    </update>
+
+    <select id="getAllCart" parameterType="java.lang.String" resultMap="cartMap">
+        select b.*,a.idx_count,idx_select
+        from t_car a left join t_goods b on a.idx_goods_id=b.pk_id
+        where a.idx_email=#{email} and a.idx_status=1;
+    </select>
+</mapper>
