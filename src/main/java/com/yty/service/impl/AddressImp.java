@@ -5,7 +5,6 @@ import com.yty.entity.Address;
 import com.yty.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -17,6 +16,11 @@ public class AddressImp implements AddressService {
     @Override
     public List<Address> getAllAddress(String email) {
         return addressMapper.getAllAddress(email);
+    }
+
+    @Override
+    public Address getAddress(String id) {
+        return addressMapper.getAddressById(id);
     }
 
     @Override
@@ -48,6 +52,4 @@ public class AddressImp implements AddressService {
     public boolean updateAddress(Address address, String email,String id) {
         return addressMapper.update(address,email,id);
     }
-
-
 }

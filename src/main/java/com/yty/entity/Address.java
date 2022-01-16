@@ -5,9 +5,11 @@ import lombok.Data;
 @Data
 public class Address {
     private Integer id;
-    private String region; //地区
+    private String province; //省
+    private String city;   //市
+    private String region; //区
     private String detail;//详细地址
-    private String postalCode;
+    private String postalCode;//邮政编码
     private String name;
     private String tel;
     private String isDefault;

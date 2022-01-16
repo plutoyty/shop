@@ -94,5 +94,10 @@ public class UserServiceImp implements UserService {
         return userMapper.changUserInfo(user);
     }
 
+    @Override
+    public boolean adminBool(String id) {
+        return userMapper.admin(id).equals("1");
+    }
+
 
 }

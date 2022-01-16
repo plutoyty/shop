@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Scanner;
+
 @CrossOrigin
 @RestController
 @RequestMapping("cart")
@@ -20,6 +22,7 @@ public class CartController {
 
     @Autowired
     private UserService userService;
+
 
     /**
      * 加入购物车
@@ -54,7 +57,7 @@ public class CartController {
 
 
     /**
-     * 获取购物车中商品
+     * 获取购物车中所有商品
      * @param email
      * @return
      */
@@ -62,6 +65,8 @@ public class CartController {
     public CartResult getCart(@RequestParam("email")String email){
         CartResult cartResult = new CartResult();
         cartResult.setData(carService.getAllCartItem(email));
+        cartResult.setSum(carService.getSum(cartResult.getData()));
+        cartResult.setSelectAll(carService.selectAll(cartResult.getData()));
         cartResult.setStatus(100);
         return cartResult;
     }
@@ -80,7 +85,75 @@ public class CartController {
                             @RequestParam("count") String count,
                             @RequestParam("select")String selected){
         BaseResult baseResult = new BaseResult();
-
-        return  baseResult;
+        boolean f = carService.updateCart(goodsId,email,count,selected);
+        if(f==true){
+            baseResult.setStatus(100);
+            baseResult.setMsg("success");
+        }else {
+            baseResult.setStatus(200);
+            baseResult.setMsg("failed");
+        }
+        return baseResult;
     }
+
+    /**
+     * 删除操作
+     * @param email
+     * @param goodsId
+     * @return
+     */
+    @RequestMapping("delete")
+    private BaseResult delete(@RequestParam("email")String email,
+                              @RequestParam("goodsId")String goodsId){
+        BaseResult baseResult = new BaseResult();
+        boolean f = carService.deleteItem(goodsId,email);
+        if (f==true){
+            baseResult.setStatus(100);
+            baseResult.setMsg("success");
+        }else {
+            baseResult.setStatus(200);
+            baseResult.setMsg("failed");
+        }
+        return baseResult;
+    }
+
+    /**
+     * 对某个用户购物车中的内容全选
+     * @param email
+     * @return
+     */
+    @RequestMapping("/allSelect")
+    private BaseResult allSelect(@RequestParam("email")String email){
+        BaseResult baseResult = new BaseResult();
+        boolean f = carService.allSelect(email);
+        if(f==true){
+            baseResult.setStatus(100);
+            baseResult.setMsg("success");
+        }else {
+            baseResult.setStatus(200);
+            baseResult.setMsg("failed");
+        }
+        return baseResult;
+    }
+
+    /**
+     * 取消全选
+     * @param email
+     * @return
+     */
+    @RequestMapping("/unAllSelect")
+    private BaseResult unAllSelect(
+            @RequestParam("email")String email){
+        BaseResult baseResult = new BaseResult();
+        boolean f = carService.unAllSelect(email);
+        if(f==true){
+            baseResult.setStatus(100);
+            baseResult.setMsg("success");
+        }else {
+            baseResult.setStatus(200);
+            baseResult.setMsg("failed");
+        }
+        return baseResult;
+    }
+
 }

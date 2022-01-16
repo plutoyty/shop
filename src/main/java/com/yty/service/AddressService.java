@@ -16,6 +16,13 @@ public interface AddressService {
     List<Address> getAllAddress(String email);
 
     /**
+     * 获取改id的地址
+     * @param id
+     * @return
+     */
+    Address getAddress(String id);
+
+    /**
      * 设置默认地址
      * @param id
      * @return

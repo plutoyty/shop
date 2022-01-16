@@ -3,5 +3,75 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yty.dao.OrderMapper">
 
+    <resultMap id="orderMap" type="com.yty.entity.Order">
+        <id column="idx_NO" property="orderId"/>
+        <result property="status" column="idx_order_status"/>
+        <result property="creatDate" column="idx_date"/>
+        <result property="province" column="idx_province"/>
+        <result property="city" column="idx_city"/>
+        <result property="region" column="idx_region"/>
+        <result property="name" column="idx_name"/>
+        <result property="tel" column="idx_tel"/>
+        <result property="sum" column="idx_total"/>
+        <result property="detail" column="idx_detail"/>
+    </resultMap>
+
+    <resultMap id="cartMap" type="com.yty.entity.CartItem">
+        <id column="pk_id" property="product.id"/>
+        <result property="product.img" column="idx_image"/>
+        <result property="product.price" column="idx_price"/>
+        <result property="product.oldPrice" column="idx_oldPrice"/>
+        <result property="product.title" column="idx_name"/>
+        <result property="product.subtitle" column="idx_subtitle"/>
+        <result property="product.shopId" column="idx_shopid"/>
+        <result property="product.category" column="idx_category"/>
+        <result property="product.sellCount" column="idx_sellcount"/>
+        <result property="product.repertory" column="idx_repertory"/>
+        <result property="product.pravitekey" column="idx_privatekey"/>
+        <result property="product.status" column="idx_status"/>
+        <result property="count" column="idx_count"/>
+    </resultMap>
+
+    <insert id="addGoods" parameterType="java.lang.String">
+        insert into t_order_goods (idx_goods_id, idx_order_id, idx_count)
+        values (#{id}, #{order}, #{count})
+    </insert>
+
+    <insert id="creatOrder" parameterType="com.yty.entity.Order">
+        insert into t_order (idx_NO, idx_order_status, idx_date, idx_total, idx_email, idx_province, idx_city,
+                             idx_region, idx_name, idx_tel, idx_detail)
+        values (#{order.orderId}, #{order.status}, #{order.creatDate}, #{order.sum},
+                #{email}, #{order.province}, #{order.city}, #{order.region}, #{order.name}, #{order.tel},
+                #{order.detail})
+    </insert>
+
+    <select id="getAllByEmail" parameterType="java.lang.String" resultMap="orderMap">
+        select *
+        from t_order
+        where idx_email = #{email}
+          and idx_delete = 1
+    </select>
+
+    <select id="getOrderById" parameterType="java.lang.String" resultMap="orderMap">
+        select *
+        from t_order
+        where idx_email = #{email}
+          and idx_NO = #{orderId}
+          and idx_delete = 1
+    </select>
+
+    <select id="getOrderGoods" resultMap="cartMap" parameterType="java.lang.String">
+        SELECT b.*, a.idx_count
+        FROM `t_order_goods` a
+                 inner join t_goods b
+        where idx_order_id = #{orderId}
+          and a.idx_goods_id = b.pk_id
+    </select>
+
+    <update id="updateStatus" parameterType="java.lang.String">
+        update t_order
+        set idx_order_status=#{status}
+        where idx_NO=#{orderId}
+    </update>
 
 </mapper>

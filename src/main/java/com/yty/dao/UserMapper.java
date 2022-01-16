@@ -35,4 +35,11 @@ public interface UserMapper {
       * @return
       */
      boolean changUserInfo(User user);
+
+     /**
+      * 判断是否是管理员
+      * @param id
+      * @return
+      */
+    String admin(String id);
 }

@@ -59,4 +59,11 @@ public interface AddressMapper {
      * @return
      */
     boolean update(@Param("address") Address address,@Param("email") String email,@Param("id")String id);
+
+    /**
+     * 获取该id的地址
+     * @param id
+     * @return
+     */
+    Address getAddressById(String id);
 }

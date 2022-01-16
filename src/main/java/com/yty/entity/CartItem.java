@@ -7,4 +7,5 @@ public class CartItem {
     private Product product;
     private String select;
     private Integer count;
+    private String sellCount;
 }

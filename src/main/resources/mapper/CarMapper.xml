@@ -20,17 +20,16 @@
         <result property="select" column="idx_select"/>
     </resultMap>
     <insert id="push" parameterType="java.lang.String">
-        insert into t_car (idx_goods_id,idx_user_id,idx_count,idx_select,idx_email)
-        values
-        (#{goodsId},#{id},1,#{select},#{email})
+        insert into t_car (idx_goods_id, idx_user_id, idx_count, idx_select, idx_email)
+        values (#{goodsId}, #{id}, 1, #{select}, #{email})
     </insert>
-    
+
     <update id="merge" parameterType="java.lang.String">
         update t_car set
         <if test="goodsId!=null">
             idx_count=idx_count+1
         </if>
-        where idx_goods_id=#{goodsId} and idx_user_id=#{userId}
+        where idx_goods_id=#{goodsId} and idx_user_id=#{userId} and idx_status=1
     </update>
 
     <update id="minus" parameterType="java.lang.String">
@@ -42,8 +41,55 @@
     </update>
 
     <select id="getAllCart" parameterType="java.lang.String" resultMap="cartMap">
-        select b.*,a.idx_count,idx_select
-        from t_car a left join t_goods b on a.idx_goods_id=b.pk_id
-        where a.idx_email=#{email} and a.idx_status=1;
+        select b.*, a.idx_count, idx_select
+        from t_car a
+                 left join t_goods b on a.idx_goods_id = b.pk_id
+        where a.idx_email = #{email}
+          and a.idx_status = 1;
     </select>
+
+    <select id="getAllSelectCartItem" parameterType="java.lang.String" resultMap="cartMap">
+        select b.*, a.idx_count
+        from t_car a
+                 left join t_goods b on a.idx_goods_id = b.pk_id
+        where a.idx_email = #{email}
+          and a.idx_status = 1 and idx_select=1;
+    </select>
+
+    <update id="updateCart" parameterType="java.lang.String">
+        update t_car set
+        <if test="count!=null">
+            idx_count=#{count},
+        </if>
+        idx_select=#{select}
+        where idx_goods_id=#{goodsId} and idx_email=#{email} and idx_status=1;
+    </update>
+
+    <update id="deleteItem" parameterType="java.lang.String">
+        update t_car
+        set idx_status=0
+        where idx_goods_id = #{goodsId}
+          and idx_email = #{email}
+    </update>
+
+    <update id="deleteSelect" parameterType="java.lang.String">
+        update t_car
+        set idx_status=0
+        where idx_email = #{email} and idx_select=1
+    </update>
+
+    <update id="selectAll" parameterType="java.lang.String">
+        update t_car
+        set idx_select=1
+        where idx_status = 1
+          and idx_email = #{email}
+    </update>
+
+    <update id="unSelectAll" parameterType="java.lang.String">
+        update t_car
+        set idx_select=0
+        where idx_status = 1
+          and idx_email = #{email}
+    </update>
+
 </mapper>

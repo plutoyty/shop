@@ -35,9 +35,22 @@
         <property name="maxPoolSize" value="${jdbc.maxActive}"/>
         <!-- 最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止 -->
         <property name="maxIdleTime" value="${jdbc.maxIdle}"/>
-        <property name="minPoolSize" value="10" />
-        <property name="maxStatements" value="0" />
-        <property name="idleConnectionTestPeriod" value="1800" />
+        <property name="minPoolSize" value="20"/>
+        <property name="maxStatements" value="1000"/>
+        <property name="idleConnectionTestPeriod" value="100"/>
+        <!--        定义在从数据库获取新连接失败后重复尝试的次数。Default: 30-->
+        <property name="acquireRetryAttempts" value="30"/>
+        <property name="testConnectionOnCheckout" value="false"/>
+        <property name="breakAfterAcquireFailure" value="true"/>
+        <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+        <!--        　　<property name="acquireIncrement" value="3" />-->
+        <!--        　　<property name="maxStatements" value="1000" />-->
+        <!--        　　&lt;!&ndash;每60秒检查所有连接池中的空闲连接。Default: 0 &ndash;&gt;-->
+        <!--        　　<property name="idleConnectionTestPeriod" value="60" />-->
+        <!--        　　&lt;!&ndash; &ndash;&gt;-->
+        <!--        　　<property name="acquireRetryAttempts" value="30" />-->
+        <!--        　　<property name="breakAfterAcquireFailure" value="true" />-->
+        <!--        　　<property name="testConnectionOnCheckout" value="false" />-->
     </bean>
 
 

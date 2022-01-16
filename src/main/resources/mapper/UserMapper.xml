@@ -39,5 +39,7 @@
     <update id="changUserInfo" parameterType="com.yty.entity.User">
         update user set idx_email=#{email},idx_birth=#{birth},idx_sex=#{sex} where pk_id=#{id};
     </update>
-
+    <select id="admin" parameterType="java.lang.String" resultType="java.lang.String">
+        select idx_roleid from t_user_role where idx_user_id=#{id}
+    </select>
 </mapper>

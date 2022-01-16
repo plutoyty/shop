@@ -2,12 +2,19 @@ package com.yty.entity;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Order {
-    private String id;
-    private String goodId;
-    private String status;
-    private String per; //单价
-    private String date;
-
+    private String orderId; //订单号
+    private List<CartItem> goods;
+    private String status; //订单状态
+    private String creatDate;
+    private String province;
+    private String city;
+    private String region;
+    private String detail;
+    private String name;
+    private String tel;
+    private Integer sum;//总价格
 }

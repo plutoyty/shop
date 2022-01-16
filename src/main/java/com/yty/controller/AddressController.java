@@ -26,8 +26,8 @@ public class AddressController {
      * @return
      */
     @RequestMapping("getAll")
-    public AllAddressResult getAll(@RequestParam("email") String email) {
-//        System.out.println(email);
+    public AllAddressResult getAll(
+            @RequestParam("email") String email) {
         AllAddressResult allAddressResult = new AllAddressResult();
         allAddressResult.setData(addressService.getAllAddress(email));
         if (allAddressResult.getData() != null) {
@@ -82,6 +82,7 @@ public class AddressController {
     @RequestMapping("/addAddress")
     private BaseResult addAddress(@RequestParam("email") String email,
                                   @RequestBody Address address) {
+        System.out.println(email+address);
         BaseResult baseResult = new BaseResult();
         Integer id = userService.getUserByName(email).getId();
         if (addressService.addAddress(address, email, id) == true) {
@@ -100,9 +101,10 @@ public class AddressController {
      * @param id
      * @return
      */
-    @RequestMapping("/deleteAddress")
+    @RequestMapping("/delete")
     private BaseResult deleteAddress(@RequestParam("email") String email,
                                      @RequestParam("id") String id) {
+        System.out.println(email+id);
         BaseResult baseResult = new BaseResult();
         if (addressService.delete(email,id)==true){
             baseResult.setStatus(100);
@@ -122,9 +124,9 @@ public class AddressController {
      * @param address
      * @return
      */
-    @RequestMapping("/update")
-    private BaseResult updateAddress(@RequestParam("email") String email,@RequestParam("id")String id,
-                                      Address address) {
+    @PutMapping("/update/{id}")
+    private BaseResult updateAddress(@RequestParam("email") String email,@PathVariable("id")String id,
+                                      @RequestBody Address address) {
         BaseResult baseResult = new BaseResult();
         if (addressService.updateAddress(address, email,id) == true) {
             baseResult.setStatus(100);

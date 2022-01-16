@@ -57,4 +57,11 @@ public interface UserService {
      * @return
      */
     boolean changeUserInfo(User user);
+
+    /**
+     * 是否是管理员
+     * @param id
+     * @return
+     */
+    boolean adminBool(String id);
 }
