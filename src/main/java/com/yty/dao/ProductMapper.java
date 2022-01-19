@@ -82,4 +82,11 @@ public interface ProductMapper {
      * @return
      */
     boolean deleteGood(String id);
+
+    /**
+     * 更改商品信息
+     * @param product
+     * @return
+     */
+    boolean updateGood(Product product);
 }

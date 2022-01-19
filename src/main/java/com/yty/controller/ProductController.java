@@ -156,4 +156,26 @@ public class ProductController {
         return baseResult;
     }
 
+    /**
+     * 更改商品资料
+     *
+     * @param product
+     * @return
+     */
+    @RequestMapping("updGood")
+    private BaseResult updGood(@RequestBody Product product) {
+        BaseResult baseResult = new BaseResult();
+        boolean f = productService.updGood(product);
+        if (f == true) {
+            baseResult.setStatus(100);
+            baseResult.setMsg("success");
+        } else {
+            baseResult.setStatus(200);
+            baseResult.setMsg("failed");
+        }
+        return baseResult;
+    }
+
+
+
 }

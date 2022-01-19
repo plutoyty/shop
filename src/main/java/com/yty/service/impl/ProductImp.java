@@ -64,5 +64,10 @@ public class ProductImp implements ProductService {
         return productMapper.deleteGood(id);
     }
 
+    @Override
+    public boolean updGood(Product product) {
+        return productMapper.updateGood(product);
+    }
+
 
 }

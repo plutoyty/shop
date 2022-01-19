@@ -62,8 +62,10 @@
 
     <insert id="addGoods" parameterType="com.yty.entity.Product">
         insert into t_goods
-        (idx_image, idx_price, idx_name, idx_subtitle, idx_shopid, idx_category, idx_repertory, idx_status, idx_date)
-        values (#{img}, #{price}, #{title}, #{subtitle}, #{shopId}, #{category}, #{repertory}, #{status}, #{date})
+        (<if test="img!=null">idx_image,</if> idx_price, idx_name, idx_subtitle,<if test="shopId!=null">idx_shopid,</if>  idx_category_id,
+        idx_repertory, idx_status, idx_date)
+        values (<if test="img!=null">#{img},</if> #{price}, #{title}, #{subtitle},<if test="shopId!=null">#{shopId},
+    </if>  #{categoryId}, #{repertory}, #{status}, #{date})
     </insert>
 
     <select id="getSearchList" parameterType="java.lang.String" resultMap="productMap">
@@ -87,5 +89,33 @@
         update t_goods
         set idx_delete=0
         where pk_id = #{id}
+    </update>
+
+    <update id="updateGood" parameterType="com.yty.entity.Product">
+        update t_goods
+        <set>
+            <if test="title!=null">
+                idx_name=#{title},
+            </if>
+            <if test="subtitle!=null">
+                idx_subtitle=#{subtitle},
+            </if>
+            <if test="price!=null">
+                idx_price=#{price},
+            </if>
+            <if test="repertory!=null">
+                idx_repertory=#{repertory},
+            </if>
+            <if test="categoryId!=null">
+                idx_category_id=#{categoryId},
+            </if>
+            <if test="hot!=null">
+                idx_hot=#{hot},
+            </if>
+            <if test="status!=null">
+                idx_status=#{status}
+            </if>
+        </set>
+        where pk_id=#{id}
     </update>
 </mapper>

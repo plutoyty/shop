@@ -1,10 +1,12 @@
 package com.yty.controller;
 
+import com.yty.Vo.BaseResult;
 import com.yty.Vo.UserinfoResult;
 import com.yty.entity.User;
 import com.yty.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController
@@ -46,6 +48,7 @@ public class PersonalController {
     @RequestMapping("changeUserInfo")
     private UserinfoResult changeInfo(
              @RequestBody User user){
+        System.out.println(user);
         UserinfoResult userinfoResult = new UserinfoResult();
         boolean f = userService.changeUserInfo(user);
         if (f==true){
@@ -58,5 +61,23 @@ public class PersonalController {
         return userinfoResult;
     }
 
+    /**
+     * 换头像
+     * @param file
+     * @return
+     */
+    @RequestMapping("head")
+    private BaseResult head(@RequestParam("file")MultipartFile file){
+        BaseResult baseResult = new BaseResult();
+        String s = userService.uploadAvatar(file);
+        if (s==null){
+            baseResult.setStatus(200);
+            baseResult.setMsg("failed");
+        }else {
+            baseResult.setStatus(100);
+            baseResult.setMsg(s);
+        }
+        return baseResult;
+    }
 
 }

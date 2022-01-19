@@ -58,4 +58,11 @@ public interface ProductService {
      * @return
      */
     boolean deleteGood(String id);
+
+    /**
+     * 更改商品资料
+     * @param product
+     * @return
+     */
+    boolean updGood(Product product);
 }

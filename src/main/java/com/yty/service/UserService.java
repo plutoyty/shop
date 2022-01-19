@@ -1,7 +1,9 @@
 package com.yty.service;
 
 import com.yty.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService {
@@ -117,5 +119,11 @@ public interface UserService {
      */
     List<User> getSearchUsers(String name, String tel);
 
+    /**
+     * 上传头像到七牛云
+     * @param avatar
+     * @return
+     */
+    String uploadAvatar(MultipartFile avatar);
 
 }

@@ -3,14 +3,20 @@ package com.yty.service.impl;
 import com.yty.dao.UserMapper;
 import com.yty.entity.User;
 import com.yty.service.UserService;
+import com.yty.utils.QiniuCloudUtil;
 import com.yty.utils.RSAUtils;
 import com.yty.utils.RedisUtil;
 import com.yty.utils.SendEmailUtil;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -155,12 +161,26 @@ public class UserServiceImp implements UserService {
     @SneakyThrows
     @Override
     public List<User> getSearchUsers(String name, String tel) {
-        List<User> list = userMapper.getSearchUsers(name,tel);
+        List<User> list = userMapper.getSearchUsers(name, tel);
         for (User c : list) {
             c.setPassword(RSAUtils.privateDecrypt(c.getPassword(), RSAUtils.getPrivateKey(c.getPravitekey().trim())));
             c.setPravitekey("");
         }
         return list;
+    }
+
+    @SneakyThrows
+    @Override
+    public String uploadAvatar(MultipartFile avatar) {
+        if (avatar.isEmpty()) {
+            return null;
+        }
+        byte[] bytes = avatar.getBytes();
+        String imageName = UUID.randomUUID().toString();
+        QiniuCloudUtil qiniuUtil = new QiniuCloudUtil();
+        //使用base64方式上传到七牛云
+        String url = qiniuUtil.put64image(bytes, imageName);
+        return url;  // success
     }
 
 
