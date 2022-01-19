@@ -5,7 +5,6 @@ import com.yty.entity.CartItem;
 import com.yty.service.impl.CartImp;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 @Mapper
@@ -91,4 +90,11 @@ public interface CarMapper {
      * @return
      */
     boolean deleteSelect(String email);
+
+    /**
+     * 获取购物车的数量
+     * @param email
+     * @return
+     */
+    Integer getCartCount(String email);
 }

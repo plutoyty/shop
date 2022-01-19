@@ -1,17 +1,18 @@
 package com.yty.controller;
 
-import com.yty.Vo.CodeResult;
-import com.yty.Vo.RegResult;
-import com.yty.Vo.UserinfoResult;
+import com.yty.Vo.*;
 import com.yty.entity.LoginData;
-import com.yty.Vo.LoginResult;
 import com.yty.service.UserService;
 import com.yty.utils.DateUtil;
 import com.yty.utils.RSAUtils;
+import com.yty.utils.RedisUtil;
 import com.yty.utils.TokenUtil;
 import com.yty.entity.User;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sun.util.calendar.BaseCalendar;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
@@ -32,10 +33,17 @@ public class LogRegController {
         return "test";
     }
 
+    /**
+     * 注册
+     *
+     * @param code
+     * @param user
+     * @return
+     */
+    @SneakyThrows
     @RequestMapping("/register")
     public RegResult register(@RequestParam("code") String code,
-                              @RequestBody User user)
-            throws InvalidKeySpecException, NoSuchAlgorithmException {
+                              @RequestBody User user) {
         RegResult result = new RegResult();
         Integer status = userService.verifyRegisterInfo(user.getEmail(), user.getPhone(), user.getPassword(), user.getUsername(), code);
         if (status == 404) {
@@ -53,8 +61,8 @@ public class LogRegController {
         }
         User user1 = userService.getUserByName(user.getEmail());
         User user2 = userService.getUserByName(user.getPhone());
-        System.out.println(user1+""+user2);
-        if (user1 != null && user2!= null) {
+        System.out.println(user1 + "" + user2);
+        if (user1 != null && user2 != null) {
             result.setStatus(2002);
             result.setMsg("邮箱或电话已被注册，注册失败!");
         } else {
@@ -85,10 +93,16 @@ public class LogRegController {
         return result;
     }
 
+    /**
+     * 登录
+     *
+     * @param user1
+     * @return
+     */
+    @SneakyThrows
     @RequestMapping("/login")
     public LoginResult Login(
-             @RequestBody User user1)
-            throws InvalidKeySpecException, NoSuchAlgorithmException {
+            @RequestBody User user1) {
         String username = user1.getUsername();
         String password = user1.getPassword();
         User user = userService.getUserByName(username);
@@ -114,11 +128,18 @@ public class LogRegController {
         return result;
     }
 
+    /**
+     * 发送验证码
+     *
+     * @param email
+     * @return
+     */
     @RequestMapping("/sendcode")
-    public CodeResult sendCode(@RequestParam("email") String email) {
+    public CodeResult sendCode(@RequestParam("email") String email,
+                               @RequestParam("msg") String msg) {
         CodeResult codeResult = new CodeResult();
         try {
-            String code = userService.sendEmail(email);
+            String code = userService.sendEmail(email, msg);
             System.out.println(code);
             if (Integer.valueOf(code) <= 60) {
                 codeResult.setStatus(300);
@@ -133,4 +154,48 @@ public class LogRegController {
         return codeResult;
     }
 
+    /**
+     * 修改密码
+     *
+     * @param username
+     * @param oldPassword
+     * @param newPassword
+     * @param code
+     * @return
+     */
+    @SneakyThrows
+    @RequestMapping("/updatePwd")
+    private BaseResult update(@RequestParam("username") String username,
+                              @RequestParam("oldPassword") String oldPassword,
+                              @RequestParam("newPassword") String newPassword,
+                              @RequestParam("code") String code) {
+        User user = userService.getUserByName(username);
+        BaseResult result = new BaseResult();
+        if (user == null) {
+            result.setMsg("用户名输入错误！");
+            result.setStatus(201);
+        } else {
+            if (RSAUtils.privateDecrypt(user.getPassword(), RSAUtils.getPrivateKey(user.getPravitekey().trim())).equals(oldPassword)) {
+                if (userService.CheckCode(user.getEmail(),code,"updateCode")==false){
+                    result.setStatus(200);
+                    result.setMsg("验证码错误");
+                    return result;
+                }
+                Map<String, String> keyMap = RSAUtils.createKeys(512);
+                String publicKey = keyMap.get("publicKey");
+                String privateKey = keyMap.get("privateKey");
+                /**
+                 * 公钥加密
+                 */
+                String encodedData = RSAUtils.publicEncrypt(newPassword, RSAUtils.getPublicKey(publicKey));
+                userService.updatePwd(user.getEmail(),encodedData);
+                result.setStatus(100);
+                result.setMsg("修改成功");
+            } else {
+                result.setStatus(200);
+                result.setMsg("密码错误");
+            }
+        }
+        return result;
+    }
 }

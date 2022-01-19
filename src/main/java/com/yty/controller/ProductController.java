@@ -1,14 +1,12 @@
 package com.yty.controller;
 
+import com.yty.Vo.BaseResult;
 import com.yty.Vo.ProductListResult;
 import com.yty.Vo.ProductResult;
 import com.yty.entity.Product;
 import com.yty.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
@@ -19,16 +17,18 @@ public class ProductController {
     private ProductService productService;
 
     /**
-     *测试接口
+     * 测试接口
+     *
      * @return
      */
     @RequestMapping("/test")
-    private String test(){
+    private String test() {
         return productService.getProductList("1").toString();
     }
 
     /**
      * 获取商品信息
+     *
      * @param id
      * @return
      */
@@ -49,14 +49,71 @@ public class ProductController {
 
     /**
      * 根据种类id获取商品
+     *
      * @param id
      * @return
      */
     @RequestMapping("/category")
-    private ProductListResult getProductList(@RequestParam("id") String id){
+    private ProductListResult getProductList(@RequestParam("id") String id) {
         ProductListResult productListResult = new ProductListResult();
         productListResult.setProducts(productService.getProductList(id));
         productListResult.setStatus(100);
         return productListResult;
+    }
+
+    /**
+     * 更新浏览时间
+     *
+     * @param email
+     * @param goodsId
+     * @return
+     */
+    @RequestMapping("/lookup")
+    private BaseResult lookup(@RequestParam("email") String email,
+                              @RequestParam("goodsId") String goodsId) {
+        BaseResult baseResult = new BaseResult();
+        boolean f = productService.lookup(email, goodsId);
+        if (f == true) {
+            baseResult.setStatus(100);
+            baseResult.setMsg("success");
+        } else {
+            baseResult.setStatus(200);
+            baseResult.setMsg("failed");
+        }
+        return baseResult;
+    }
+
+    /**
+     * 获取商品浏览记录
+     *
+     * @param email
+     * @return
+     */
+    @RequestMapping("/getLookup")
+    private ProductListResult getLookup(@RequestParam("email") String email) {
+        ProductListResult productListResult = new ProductListResult();
+        productListResult.setProducts(productService.getLookup(email));
+        productListResult.setStatus(100);
+        return productListResult;
+    }
+
+    /**
+     * 添加商品
+     *
+     * @param product
+     * @return
+     */
+    @RequestMapping("/addGoods")
+    private BaseResult addGoods(@RequestBody Product product) {
+        BaseResult baseResult = new BaseResult();
+        boolean f = productService.addGoods(product);
+        if (f == true) {
+            baseResult.setStatus(100);
+            baseResult.setMsg("success");
+        } else {
+            baseResult.setStatus(200);
+            baseResult.setMsg("failed");
+        }
+        return baseResult;
     }
 }

@@ -1,5 +1,6 @@
 package com.yty.controller;
 
+import com.yty.Vo.BaseDataResult;
 import com.yty.Vo.BaseResult;
 import com.yty.Vo.CartResult;
 import com.yty.service.CartService;
@@ -156,4 +157,12 @@ public class CartController {
         return baseResult;
     }
 
+    @RequestMapping("/count")
+    private BaseDataResult<Integer> getCartCount(@RequestParam("email")String email){
+        BaseDataResult<Integer> baseDataResult = new BaseDataResult<>();
+        Integer count = carService.getCount(email);
+        baseDataResult.setData(count);
+        baseDataResult.setStatus(100);
+        return baseDataResult;
+    }
 }

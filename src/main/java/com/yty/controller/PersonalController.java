@@ -31,6 +31,7 @@ public class PersonalController {
         if (user != null){
             userinfoResult.setStatus(100);
             userinfoResult.setData(user);
+            userinfoResult.getData().setPassword("");
         }else {
             userinfoResult.setStatus(200);
         }
@@ -56,5 +57,6 @@ public class PersonalController {
         }
         return userinfoResult;
     }
+
 
 }

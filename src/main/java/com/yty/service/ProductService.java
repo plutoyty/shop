@@ -20,4 +20,25 @@ public interface ProductService {
      */
     List<Product> getProductList(String id);
 
+    /**
+     * 更新浏览时间
+     * @param email
+     * @param goodsId
+     * @return
+     */
+    boolean lookup(String email, String goodsId);
+
+    /**
+     * 获取浏览记录
+     * @param email
+     * @return
+     */
+    List<Product> getLookup(String email);
+
+    /**
+     * 添加商品
+     * @param product
+     * @return
+     */
+    boolean addGoods(Product product);
 }

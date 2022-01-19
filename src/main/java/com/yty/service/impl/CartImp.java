@@ -79,4 +79,9 @@ public class CartImp implements CartService {
         }
         return "true";
     }
+
+    @Override
+    public Integer getCount(String email) {
+        return carMapper.getCartCount(email);
+    }
 }

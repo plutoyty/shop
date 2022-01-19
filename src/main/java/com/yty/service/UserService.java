@@ -2,6 +2,8 @@ package com.yty.service;
 
 import com.yty.entity.User;
 
+import java.util.List;
+
 public interface UserService {
     void print();
 
@@ -30,9 +32,10 @@ public interface UserService {
     /**
      * 发送验证码
      * @param email
+     * @param msg
      * @return
      */
-    String sendEmail(String email);
+    String sendEmail(String email,String msg);
 
     /**
      * 随机生成验证码
@@ -64,4 +67,55 @@ public interface UserService {
      * @return
      */
     boolean adminBool(String id);
+
+    /**
+     * 检查验证码
+     * @param code
+     * @return
+     */
+    boolean CheckCode(String email,String code,String type);
+
+    /**
+     * 修改密码
+     * @param email
+     * @param newPassword
+     */
+    void updatePwd(String email, String newPassword);
+
+    /**
+     * 获取用户
+     *          ***分页为加
+     * @return
+     */
+    List<User> getUsers();
+
+    /**
+     * 获取用户数量
+     * @return
+     */
+    Integer getUsersCount();
+
+    /**
+     * 删除用户
+     * @param email
+     * @return
+     */
+    boolean deleteUser(String email);
+
+    /**
+     * 更新用户
+     * @param user
+     * @return
+     */
+    boolean updataUser(User user);
+
+    /**
+     *查找用户
+     * @param name
+     * @param tel
+     * @return
+     */
+    List<User> getSearchUsers(String name, String tel);
+
+
 }

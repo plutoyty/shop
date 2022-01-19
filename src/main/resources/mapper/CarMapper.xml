@@ -53,7 +53,8 @@
         from t_car a
                  left join t_goods b on a.idx_goods_id = b.pk_id
         where a.idx_email = #{email}
-          and a.idx_status = 1 and idx_select=1;
+          and a.idx_status = 1
+          and idx_select = 1;
     </select>
 
     <update id="updateCart" parameterType="java.lang.String">
@@ -75,7 +76,8 @@
     <update id="deleteSelect" parameterType="java.lang.String">
         update t_car
         set idx_status=0
-        where idx_email = #{email} and idx_select=1
+        where idx_email = #{email}
+          and idx_select = 1
     </update>
 
     <update id="selectAll" parameterType="java.lang.String">
@@ -92,4 +94,9 @@
           and idx_email = #{email}
     </update>
 
+    <select id="getCartCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*)
+        from t_car
+        where idx_email = #{email} and idx_status=1
+    </select>
 </mapper>

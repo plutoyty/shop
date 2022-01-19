@@ -3,11 +3,15 @@ package com.yty.service.impl;
 import com.yty.dao.UserMapper;
 import com.yty.entity.User;
 import com.yty.service.UserService;
+import com.yty.utils.RSAUtils;
 import com.yty.utils.RedisUtil;
 import com.yty.utils.SendEmailUtil;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -46,13 +50,13 @@ public class UserServiceImp implements UserService {
 
     @SneakyThrows
     @Override
-    public String sendEmail(String email) {
-        if (redisUtil.hasKey(email + "emailCode") == true) {
-            return ""+redisUtil.getExpire(email + "emailCode");
+    public String sendEmail(String email, String msg) {
+        if (redisUtil.hasKey(email + msg) == true) {
+            return "" + redisUtil.getExpire(email + msg);
         }
         String code = makeCode();
         SendEmailUtil.sendMail(email, code);
-        redisUtil.set(email + "emailCode", code, 58);
+        redisUtil.set(email + msg, code, 60);
         return code;
     }
 
@@ -83,11 +87,11 @@ public class UserServiceImp implements UserService {
     public boolean changeUserInfo(User user) {
         User user1 = userMapper.getUser(user.getEmail());
         String sex = user.getSex();
-        if (sex.equals("男")){
+        if (sex.equals("男")) {
             user.setSex("1");
-        }else if (sex.equals("女")){
+        } else if (sex.equals("女")) {
             user.setSex("0");
-        }else {
+        } else {
             user.setSex("-1");
         }
         user.setId(user1.getId());
@@ -97,6 +101,67 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean adminBool(String id) {
         return userMapper.admin(id).equals("1");
+    }
+
+    @Override
+    public boolean CheckCode(String email, String code, String type) {
+
+        if (!redisUtil.hasKey(email + type) || redisUtil.hasKey(email + type) && !code.equals(redisUtil.get(email + type))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void updatePwd(String email, String newPassword) {
+        userMapper.updatePwd(email, newPassword);
+    }
+
+    @SneakyThrows
+    @Override
+    public List<User> getUsers() {
+        List<User> list = userMapper.getUsers();
+        for (User c : list) {
+            c.setPassword(RSAUtils.privateDecrypt(c.getPassword(), RSAUtils.getPrivateKey(c.getPravitekey().trim())));
+            c.setPravitekey("");
+        }
+        return list;
+    }
+
+    @Override
+    public Integer getUsersCount() {
+        return userMapper.getUsersCount();
+    }
+
+    @Override
+    public boolean deleteUser(String email) {
+        return userMapper.deleteUser(email);
+    }
+
+    @SneakyThrows
+    @Override
+    public boolean updataUser(User user) {
+        Map<String, String> keyMap = RSAUtils.createKeys(512);
+        String publicKey = keyMap.get("publicKey");
+        String privateKey = keyMap.get("privateKey");
+        /**
+         * 公钥加密
+         */
+        String encodedData = RSAUtils.publicEncrypt(user.getPassword(), RSAUtils.getPublicKey(publicKey));
+        user.setPassword(encodedData);
+        user.setPravitekey(privateKey);
+        return userMapper.updateUser(user);
+    }
+
+    @SneakyThrows
+    @Override
+    public List<User> getSearchUsers(String name, String tel) {
+        List<User> list = userMapper.getSearchUsers(name,tel);
+        for (User c : list) {
+            c.setPassword(RSAUtils.privateDecrypt(c.getPassword(), RSAUtils.getPrivateKey(c.getPravitekey().trim())));
+            c.setPravitekey("");
+        }
+        return list;
     }
 
 

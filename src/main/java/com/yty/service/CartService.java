@@ -87,4 +87,11 @@ public interface CartService {
      * @return
      */
     String selectAll(List<CartItem> list);
+
+    /**
+     * 获取购物车的数量
+     * @param email
+     * @return
+     */
+    Integer getCount(String email);
 }

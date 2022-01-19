@@ -16,6 +16,7 @@
         <result property="birth" column="idx_birth"/>
         <result property="pravitekey" column="idx_privatekey"/>
         <result property="status" column="idx_status"/>
+        <result property="date" column="idx_date"/>
     </resultMap>
     <select id="login" parameterType="com.yty.entity.User" resultMap="userMap">
         select *
@@ -25,8 +26,8 @@
     </select>
 
     <insert id="register" parameterType="com.yty.entity.User">
-        insert into user (idx_email, idx_name, idx_password, idx_tel,idx_status,idx_date,idx_privatekey,idx_account)
-        values (#{email}, #{username}, #{password}, #{phone},#{status},#{date},#{pravitekey},#{account})
+        insert into user (idx_email, idx_name, idx_password, idx_tel, idx_status, idx_date, idx_privatekey, idx_account)
+        values (#{email}, #{username}, #{password}, #{phone}, #{status}, #{date}, #{pravitekey}, #{account})
     </insert>
 
     <select id="getUser" parameterType="java.lang.String" resultMap="userMap">
@@ -37,9 +38,58 @@
     </select>
 
     <update id="changUserInfo" parameterType="com.yty.entity.User">
-        update user set idx_email=#{email},idx_birth=#{birth},idx_sex=#{sex} where pk_id=#{id};
+        update user
+        set idx_email=#{email},
+            idx_birth=#{birth},
+            idx_sex=#{sex}
+        where pk_id = #{id};
     </update>
     <select id="admin" parameterType="java.lang.String" resultType="java.lang.String">
-        select idx_roleid from t_user_role where idx_user_id=#{id}
+        select idx_roleid
+        from t_user_role
+        where idx_user_id = #{id}
+    </select>
+    <update id="updatePwd" parameterType="java.lang.String">
+        update user
+        set idx_password=#{password}
+        where idx_email = #{email}
+          and idx_status = 1
+    </update>
+    <select id="getUsers" parameterType="java.lang.String" resultMap="userMap">
+        select *
+        from user
+    </select>
+    <select id="getUsersCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*)
+        from user
+    </select>
+
+    <update id="deleteUser" parameterType="java.lang.String">
+        update user
+        set idx_status=0
+        where idx_email = #{email}
+    </update>
+
+    <update id="updateUser" parameterType="com.yty.entity.User">
+        update user
+        set idx_status=#{status},
+            idx_name=#{username},
+            idx_password=#{password},
+            idx_privatekey=#{pravitekey}
+        where idx_email = #{email}
+    </update>
+
+    <select id="getSearchUsers" parameterType="java.lang.String" resultMap="userMap">
+        select *
+        from user
+        where
+        <if test="name!=null">
+            idx_name like CONCAT('%', #{name}, '%')
+            and
+        </if>
+        <if test="tel!=null">
+            idx_tel like CONCAT('%', #{tel}, '%')
+        </if>
+
     </select>
 </mapper>
