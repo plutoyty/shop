@@ -116,4 +116,44 @@ public class ProductController {
         }
         return baseResult;
     }
+
+    /**
+     * 查询商品
+     *
+     * @return
+     */
+    @RequestMapping("getGoods")
+    private ProductListResult getGoods(@RequestParam("name") String title,
+                                       @RequestParam("category") String category,
+                                       @RequestParam("pageIndex") String pageIndex,
+                                       @RequestParam("pageSize") String pageSize) {
+        title = title.trim();
+        category = category.trim();
+        ProductListResult p = new ProductListResult();
+        p.setProducts(productService.getGoods(title, category, pageIndex, pageSize));
+        p.setStatus(100);
+        p.setMsg("success");
+        return p;
+    }
+
+    /**
+     * 删除商品
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("deleteGood")
+    private BaseResult deleteGood(@RequestParam("id") String id) {
+        BaseResult baseResult = new BaseResult();
+        boolean f = productService.deleteGood(id);
+        if (f == true) {
+            baseResult.setStatus(100);
+            baseResult.setMsg("success");
+        } else {
+            baseResult.setStatus(200);
+            baseResult.setMsg("failed");
+        }
+        return baseResult;
+    }
+
 }

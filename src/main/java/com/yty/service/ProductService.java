@@ -41,4 +41,21 @@ public interface ProductService {
      * @return
      */
     boolean addGoods(Product product);
+
+    /**
+     * 查询商品
+     * @param title
+     * @param category
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    List<Product> getGoods(String title, String category, String pageIndex, String pageSize);
+
+    /**
+     * 删除商品
+     * @param id
+     * @return
+     */
+    boolean deleteGood(String id);
 }

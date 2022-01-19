@@ -47,7 +47,21 @@ public class ProductImp implements ProductService {
 
     @Override
     public boolean addGoods(Product product) {
+        product.setDate(DateUtil.ptfDate());
         return productMapper.addGoods(product);
+    }
+
+    @Override
+    public List<Product> getGoods(String title, String categoryId, String pageIndex, String pageSize) {
+        Integer start = Integer.valueOf(pageIndex) * Integer.valueOf(pageSize)-Integer.valueOf(pageSize);
+        Integer end = start+Integer.valueOf(pageSize)+1;
+        List<Product> list = productMapper.getSearchList(title,categoryId,start,end);
+        return list;
+    }
+
+    @Override
+    public boolean deleteGood(String id) {
+        return productMapper.deleteGood(id);
     }
 
 

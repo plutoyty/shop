@@ -14,7 +14,11 @@
         <result property="sellCount" column="idx_sellcount"/>
         <result property="repertory" column="idx_repertory"/>
         <result property="status" column="idx_status"/>
+        <result property="hot" column="idx_hot"/>
+        <result property="date" column="idx_date"/>
+        <result property="categoryId" column="idx_category_id"/>
     </resultMap>
+
     <select id="getProduct" resultMap="productMap" parameterType="java.lang.String">
         select *
         from t_goods
@@ -24,20 +28,24 @@
     <select id="getProductList" resultMap="productMap" parameterType="java.lang.String">
         select *
         from t_goods
-        where idx_category_id = #{id};
+        where idx_category_id = #{id}
+          and idx_delete = 1;
     </select>
+
     <select id="checkLookup" parameterType="java.lang.String" resultType="java.lang.String">
         select pk_id
         from t_history_watch
         where idx_goods_id = #{goodsId}
           and idx_email = #{email}
     </select>
+
     <update id="updateLookup" parameterType="java.lang.String">
         update t_history_watch
         set idx_date=#{date}
         where idx_goods_id = #{goodsId}
           and idx_email = #{email};
     </update>
+
     <insert id="insertLookup" parameterType="java.lang.String">
         insert into t_history_watch
             (idx_date, idx_goods_id, idx_email)
@@ -54,8 +62,30 @@
 
     <insert id="addGoods" parameterType="com.yty.entity.Product">
         insert into t_goods
-        (idx_image, idx_price, idx_name, idx_subtitle, idx_shopid, idx_category, idx_repertory, idx_status)
-        values (#{img}, #{price}, #{title}, #{subtitle}, #{shopId}, #{category}, #{repertory}, #{status})
+        (idx_image, idx_price, idx_name, idx_subtitle, idx_shopid, idx_category, idx_repertory, idx_status, idx_date)
+        values (#{img}, #{price}, #{title}, #{subtitle}, #{shopId}, #{category}, #{repertory}, #{status}, #{date})
     </insert>
 
+    <select id="getSearchList" parameterType="java.lang.String" resultMap="productMap">
+        select *
+        from t_goods
+        <where>
+            <if test="title!=null">
+                idx_name like CONCAT('%', #{title}, '%') and
+            </if>
+            <if test="categoryId!=null">
+                idx_category_id like CONCAT('%', #{categoryId}, '%') and
+            </if>
+            idx_delete=1
+        </where>
+        order by idx_date desc
+        limit #{start} , #{end}
+
+    </select>
+
+    <update id="deleteGood" parameterType="java.lang.String">
+        update t_goods
+        set idx_delete=0
+        where pk_id = #{id}
+    </update>
 </mapper>

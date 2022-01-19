@@ -64,4 +64,22 @@ public interface ProductMapper {
      * @return
      */
     boolean addGoods(Product product);
+
+    /**
+     * 查询商品
+     * @param title
+     * @param categoryId
+     * @param start
+     * @param end
+     * @return
+     */
+    List<Product> getSearchList(@Param("title") String title,@Param("categoryId") String categoryId,
+                                @Param("start") Integer start,@Param("end") Integer end);
+
+    /**
+     * 删除商品
+     * @param id
+     * @return
+     */
+    boolean deleteGood(String id);
 }

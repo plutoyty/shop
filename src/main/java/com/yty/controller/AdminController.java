@@ -1,7 +1,5 @@
 package com.yty.controller;
 
-
-import com.alipay.easysdk.factory.Factory;
 import com.yty.Vo.BaseResult;
 import com.yty.Vo.LoginResult;
 import com.yty.Vo.UserListResult;
@@ -126,4 +124,7 @@ public class AdminController {
         userListResult.setCount(userListResult.getData().size());
         return userListResult;
     }
+
+
+
 }
