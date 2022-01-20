@@ -82,7 +82,7 @@ public interface UserService {
      * @param email
      * @param newPassword
      */
-    void updatePwd(String email, String newPassword);
+    void updatePwd(String email, String newPassword,String privateKey);
 
     /**
      * 获取用户

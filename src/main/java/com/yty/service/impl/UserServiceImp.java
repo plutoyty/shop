@@ -118,8 +118,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void updatePwd(String email, String newPassword) {
-        userMapper.updatePwd(email, newPassword);
+    public void updatePwd(String email, String newPassword,String privateKey) {
+        userMapper.updatePwd(email, newPassword,privateKey);
     }
 
     @SneakyThrows

@@ -14,6 +14,7 @@
         <result property="tel" column="idx_tel"/>
         <result property="sum" column="idx_total"/>
         <result property="detail" column="idx_detail"/>
+        <result property="updateDate" column="idx_update_date"/>
     </resultMap>
 
     <resultMap id="cartMap" type="com.yty.entity.CartItem">
@@ -39,10 +40,10 @@
 
     <insert id="creatOrder" parameterType="com.yty.entity.Order">
         insert into t_order (idx_NO, idx_order_status, idx_date, idx_total, idx_email, idx_province, idx_city,
-                             idx_region, idx_name, idx_tel, idx_detail)
+                             idx_region, idx_name, idx_tel, idx_detail,idx_update_date)
         values (#{order.orderId}, #{order.status}, #{order.creatDate}, #{order.sum},
                 #{email}, #{order.province}, #{order.city}, #{order.region}, #{order.name}, #{order.tel},
-                #{order.detail})
+                #{order.detail},#{order.updateDate})
     </insert>
 
     <select id="getAllByEmail" parameterType="java.lang.String" resultMap="orderMap">
@@ -70,7 +71,28 @@
 
     <update id="updateStatus" parameterType="java.lang.String">
         update t_order
-        set idx_order_status=#{status}
+        set idx_order_status=#{status},idx_update_date=#{date}
+        where idx_NO=#{orderId}
+    </update>
+
+    <select id="selectOrder" parameterType="java.lang.String" resultMap="orderMap">
+        select *
+        from t_order
+        <where>
+            <if test="orderId!=null">
+                idx_NO like CONCAT('%', #{orderId}, '%') and
+            </if>
+             <if test="status!=null">
+                 idx_order_status=#{status} and
+             </if>
+            idx_delete=1
+        </where>
+        order by idx_date desc limit #{start},#{end}
+    </select>
+    
+    <update id="deleteOrder" parameterType="java.lang.String">
+        update t_order
+        set idx_delete = 0
         where idx_NO=#{orderId}
     </update>
 

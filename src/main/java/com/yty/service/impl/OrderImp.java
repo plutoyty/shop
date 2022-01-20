@@ -26,6 +26,7 @@ public class OrderImp implements OrderService {
         }
         Order order = new Order();
         order.setCreatDate(DateUtil.ptfDate());
+        order.setUpdateDate(DateUtil.ptfDate());
         order.setOrderId(String.valueOf(OrderNumUtil.getOrderIdByUUId()));
         order.setName(address.getName());
         order.setCity(address.getCity());
@@ -54,8 +55,8 @@ public class OrderImp implements OrderService {
     }
 
     @Override
-    public boolean delete(String email, String orderId) {
-        return false;
+    public boolean delete( String orderId) {
+        return orderMapper.deleteOrder(orderId);
     }
 
     @Override
@@ -65,6 +66,14 @@ public class OrderImp implements OrderService {
 
     @Override
     public boolean updateStatus(String status, String orderId) {
-        return orderMapper.updateStatus(status,orderId);
+        String date = DateUtil.ptfDate();
+        return orderMapper.updateStatus(status,orderId,date);
+    }
+
+    @Override
+    public List<Order> selectOrder(String orderId, String status, String page, String pageSize) {
+        Integer start = Integer.valueOf(page) * Integer.valueOf(pageSize)-Integer.valueOf(pageSize);
+        Integer end = start+Integer.valueOf(pageSize)+1;
+        return orderMapper.selectOrder(orderId,status,start,end);
     }
 }

@@ -53,5 +53,23 @@ public interface OrderMapper {
      * @param orderId
      * @return
      */
-    boolean updateStatus(@Param("status") String status,@Param("orderId") String orderId);
+    boolean updateStatus(@Param("status") String status,@Param("orderId") String orderId,@Param("date")String date);
+
+    /**
+     * 获取订单列表
+     * @param orderId
+     * @param status
+     * @param start
+     * @param end
+     * @return
+     */
+    List<Order> selectOrder(@Param("orderId") String orderId,@Param("status") String status,
+                            @Param("start") Integer start,@Param("end") Integer end);
+
+    /**
+     * 删除订单
+     * @param orderId
+     * @return
+     */
+    boolean deleteOrder(@Param("orderId") String orderId);
 }

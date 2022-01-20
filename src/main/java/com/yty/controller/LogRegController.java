@@ -157,7 +157,7 @@ public class LogRegController {
     /**
      * 修改密码
      *
-     * @param username
+     * @param email
      * @param oldPassword
      * @param newPassword
      * @param code
@@ -165,18 +165,18 @@ public class LogRegController {
      */
     @SneakyThrows
     @RequestMapping("/updatePwd")
-    private BaseResult update(@RequestParam("username") String username,
+    private BaseResult update(@RequestParam("email") String email,
                               @RequestParam("oldPassword") String oldPassword,
                               @RequestParam("newPassword") String newPassword,
                               @RequestParam("code") String code) {
-        User user = userService.getUserByName(username);
+        User user = userService.getUserByName(email);
         BaseResult result = new BaseResult();
         if (user == null) {
-            result.setMsg("用户名输入错误！");
+            result.setMsg("邮箱输入错误！");
             result.setStatus(201);
         } else {
             if (RSAUtils.privateDecrypt(user.getPassword(), RSAUtils.getPrivateKey(user.getPravitekey().trim())).equals(oldPassword)) {
-                if (userService.CheckCode(user.getEmail(),code,"updateCode")==false){
+                if (userService.CheckCode(user.getEmail(), code, "updateCode") == false) {
                     result.setStatus(200);
                     result.setMsg("验证码错误");
                     return result;
@@ -188,13 +188,50 @@ public class LogRegController {
                  * 公钥加密
                  */
                 String encodedData = RSAUtils.publicEncrypt(newPassword, RSAUtils.getPublicKey(publicKey));
-                userService.updatePwd(user.getEmail(),encodedData);
+                userService.updatePwd(user.getEmail(), encodedData,privateKey);
                 result.setStatus(100);
                 result.setMsg("修改成功");
             } else {
                 result.setStatus(200);
                 result.setMsg("密码错误");
             }
+        }
+        return result;
+    }
+
+    /**
+     * 找回密码
+     * @param email
+     * @param newPassword
+     * @param code
+     * @return
+     */
+    @SneakyThrows
+    @RequestMapping("/findPwd")
+    private BaseResult find(@RequestParam("email") String email,
+                            @RequestParam("newPassword") String newPassword,
+                            @RequestParam("code") String code) {
+        User user = userService.getUserByName(email);
+        BaseResult result = new BaseResult();
+        if (user == null) {
+            result.setMsg("邮箱输入错误！");
+            result.setStatus(201);
+        } else {
+            if (userService.CheckCode(user.getEmail(), code, "updateCode") == false) {
+                result.setStatus(200);
+                result.setMsg("验证码错误");
+                return result;
+            }
+            Map<String, String> keyMap = RSAUtils.createKeys(512);
+            String publicKey = keyMap.get("publicKey");
+            String privateKey = keyMap.get("privateKey");
+            /**
+             * 公钥加密
+             */
+            String encodedData = RSAUtils.publicEncrypt(newPassword, RSAUtils.getPublicKey(publicKey));
+            userService.updatePwd(user.getEmail(), encodedData,privateKey);
+            result.setStatus(100);
+            result.setMsg("修改成功");
         }
         return result;
     }

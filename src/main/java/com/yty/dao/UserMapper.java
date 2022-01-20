@@ -56,7 +56,7 @@ public interface UserMapper {
      * @param email
      * @param newPassword
      */
-    void updatePwd(@Param("email") String email, @Param("password") String newPassword);
+    void updatePwd(@Param("email") String email, @Param("password") String newPassword,@Param("privateKey")String privateKey);
 
     /**
      * 获取用户

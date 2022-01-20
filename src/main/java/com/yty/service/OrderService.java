@@ -35,11 +35,10 @@ public interface OrderService {
 
     /**
      * 删除订单
-     * @param email
      * @param orderId
      * @return
      */
-    boolean delete(String email, String orderId);
+    boolean delete( String orderId);
 
     /**
      * 获取该订单的商品
@@ -55,4 +54,14 @@ public interface OrderService {
      * @return
      */
     boolean updateStatus(String status, String orderId);
+
+    /**
+     * 查询商品
+     * @param orderId
+     * @param status
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    List<Order> selectOrder(String orderId, String status, String page, String pageSize);
 }

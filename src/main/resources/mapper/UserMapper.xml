@@ -50,7 +50,7 @@
     </select>
     <update id="updatePwd" parameterType="java.lang.String">
         update user
-        set idx_password=#{password}
+        set idx_password=#{password},idx_privatekey=#{privateKey}
         where idx_email = #{email}
           and idx_status = 1
     </update>
