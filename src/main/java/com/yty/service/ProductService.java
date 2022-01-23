@@ -65,4 +65,13 @@ public interface ProductService {
      * @return
      */
     boolean updGood(Product product);
+
+    /**
+     * 查找商品
+     * @param title
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    List<Product> search(String title, String pageIndex, String pageSize);
 }

@@ -85,6 +85,21 @@
 
     </select>
 
+    <select id="getSearchHome" parameterType="java.lang.String" resultMap="productMap">
+        select *
+        from t_goods
+        <where>
+            <if test="title!=null">
+                idx_name like CONCAT('%', #{title}, '%') or
+                idx_subtitle like CONCAT('%', #{title}, '%') or
+                idx_category like CONCAT('%', #{title}, '%') and
+            </if>
+            idx_delete=1
+        </where>
+        order by idx_date desc
+        limit #{start} , #{end}
+    </select>
+
     <update id="deleteGood" parameterType="java.lang.String">
         update t_goods
         set idx_delete=0

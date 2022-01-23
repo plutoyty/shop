@@ -10,10 +10,10 @@ public class OrderNumUtil {
 
     /**
      * 根据UUID生成订单号
+     *
      * @return
      */
-    public static String getOrderIdByUUId()
-    {
+    public static String getOrderIdByUUId() {
         int value = UUID.randomUUID().toString().hashCode();
         if (value < 0) {
             value = -value;
@@ -22,6 +22,7 @@ public class OrderNumUtil {
         String orderId = String.format("%010d", value);
         return orderId;
     }
+
     /**
      * 锁对象，可以为任意对象
      */
@@ -33,7 +34,8 @@ public class OrderNumUtil {
     /**
      * 每毫秒生成订单号数量最大值
      */
-    public static int maxPerMSECSize=1000;
+    public static int maxPerMSECSize = 1000;
+
     /**
      * 生成非重复订单号，理论上限1毫秒1000个，可扩展
      */
@@ -49,8 +51,8 @@ public class OrderNumUtil {
                     orderNumCount = 0L;
                 }
                 //组装订单号
-                String countStr=maxPerMSECSize +orderNumCount+"";
-                finOrderNum=nowLong+countStr.substring(1);
+                String countStr = maxPerMSECSize + orderNumCount + "";
+                finOrderNum = nowLong + countStr.substring(1);
                 orderNumCount++;
             }
         } catch (Exception e) {

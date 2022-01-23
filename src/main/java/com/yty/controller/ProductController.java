@@ -176,6 +176,25 @@ public class ProductController {
         return baseResult;
     }
 
+    /**
+     * 查找商品
+     *
+     * @param title
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("getSearchGoods")
+    private ProductListResult searchGoods(@RequestParam("name") String title,
+                                          @RequestParam("pageIndex") String pageIndex,
+                                          @RequestParam("pageSize") String pageSize) {
+        title = title.trim();
+        ProductListResult p = new ProductListResult();
+        p.setProducts(productService.search(title, pageIndex, pageSize));
+        p.setStatus(100);
+        p.setMsg("success");
+        return p;
+    }
 
 
 }

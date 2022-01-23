@@ -1,9 +1,8 @@
 package com.yty.service;
 
+
 import com.yty.entity.User;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService {

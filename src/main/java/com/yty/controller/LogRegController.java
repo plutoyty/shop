@@ -5,16 +5,11 @@ import com.yty.entity.LoginData;
 import com.yty.service.UserService;
 import com.yty.utils.DateUtil;
 import com.yty.utils.RSAUtils;
-import com.yty.utils.RedisUtil;
 import com.yty.utils.TokenUtil;
 import com.yty.entity.User;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sun.util.calendar.BaseCalendar;
-
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 import java.util.UUID;
 

@@ -40,6 +40,9 @@
     <update id="changUserInfo" parameterType="com.yty.entity.User">
         update user
         set idx_name=#{username},
+            <if test="head!=null">
+                idx_head=#{head},
+            </if>
             idx_sex=#{sex}
         where pk_id = #{id};
     </update>

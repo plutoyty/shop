@@ -1,8 +1,6 @@
 package com.yty.dao;
 
-import com.yty.Vo.CartResult;
 import com.yty.entity.CartItem;
-import com.yty.service.impl.CartImp;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;

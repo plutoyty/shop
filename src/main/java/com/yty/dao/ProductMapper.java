@@ -3,7 +3,6 @@ package com.yty.dao;
 import com.yty.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 
@@ -89,4 +88,13 @@ public interface ProductMapper {
      * @return
      */
     boolean updateGood(Product product);
+
+    /**
+     * 查找商品
+     * @param title
+     * @param start
+     * @param end
+     * @return
+     */
+    List<Product> getSearchHome(@Param("title") String title,@Param("start") Integer start,@Param("end") Integer end);
 }

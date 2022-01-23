@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 @CrossOrigin
 @RestController
 @RequestMapping("personal")
@@ -45,7 +47,7 @@ public class PersonalController {
      * @param user
      * @return
      */
-    @RequestMapping("changeUserInfo")
+    @RequestMapping("/changeUserInfo")
     private UserinfoResult changeInfo(
              @RequestBody User user){
         System.out.println(user);
@@ -66,7 +68,7 @@ public class PersonalController {
      * @param file
      * @return
      */
-    @RequestMapping("head")
+    @RequestMapping("/head")
     private BaseResult head(@RequestParam("file")MultipartFile file){
         BaseResult baseResult = new BaseResult();
         String s = userService.uploadAvatar(file);

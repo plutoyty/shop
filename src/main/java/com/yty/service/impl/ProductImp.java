@@ -69,5 +69,13 @@ public class ProductImp implements ProductService {
         return productMapper.updateGood(product);
     }
 
+    @Override
+    public List<Product> search(String title, String pageIndex, String pageSize) {
+        Integer start = Integer.valueOf(pageIndex) * Integer.valueOf(pageSize)-Integer.valueOf(pageSize);
+        Integer end = start+Integer.valueOf(pageSize)+1;
+        List<Product> list = productMapper.getSearchHome(title,start,end);
+        return list;
+    }
+
 
 }

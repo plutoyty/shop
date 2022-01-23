@@ -70,6 +70,7 @@
         <property name="database" value="${redis.dbIndex}"/>
         <property name="poolConfig" ref="poolConfig"/>
     </bean>
+
     <!-- 配置RedisTemplate -->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
@@ -86,6 +87,36 @@
     <bean id="redisUtil" class="com.yty.utils.RedisUtil">
         <property name="redisTemplate" ref="redisTemplate"/>
     </bean>
+
+<!--    &lt;!&ndash; 定义监听容器 &ndash;&gt;-->
+<!--    <bean id="redisMessageListenerContainer"-->
+<!--          class="org.springframework.data.redis.listener.RedisMessageListenerContainer">-->
+<!--        <property name="connectionFactory" ref="jedisConnectionFactory" />-->
+<!--        &lt;!&ndash; 任务执行器 &ndash;&gt;-->
+<!--        <property name="messageListeners">-->
+<!--            <map>-->
+<!--                <entry key-ref="redisMessageListener">-->
+<!--                    <list>-->
+<!--                        <bean class="org.springframework.data.redis.listener.PatternTopic">-->
+<!--                            <constructor-arg value="chat*" />-->
+<!--                        </bean>-->
+<!--                        <bean class="org.springframework.data.redis.listener.ChannelTopic">-->
+<!--                            <constructor-arg value="chen1" />-->
+<!--                        </bean>-->
+<!--                        <bean class="org.springframework.data.redis.listener.ChannelTopic">-->
+<!--                            <constructor-arg value="chen2" />-->
+<!--                        </bean>-->
+<!--                        <bean class="org.springframework.data.redis.listener.ChannelTopic">-->
+<!--                            <constructor-arg value="__keyevent@6__:expired" />-->
+<!--                        </bean>-->
+<!--                    </list>-->
+<!--                </entry>-->
+<!--            </map>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+
+
 
 
     <!--    配置和MyBatis的整合-->
