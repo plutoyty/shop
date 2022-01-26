@@ -72,4 +72,11 @@ public interface OrderMapper {
      * @return
      */
     boolean deleteOrder(@Param("orderId") String orderId);
+
+    /**
+     * 获取该订单的信息
+     * @param orderId
+     * @return
+     */
+    Order getOrder(String orderId);
 }

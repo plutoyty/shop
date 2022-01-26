@@ -3,8 +3,8 @@ package com.yty.service;
 import com.yty.entity.Address;
 import com.yty.entity.CartItem;
 import com.yty.entity.Order;
-
 import java.util.List;
+
 
 public interface OrderService {
 
@@ -40,6 +40,12 @@ public interface OrderService {
      */
     boolean delete( String orderId);
 
+    /**
+     * 获取改订单的信息
+     * @param orderId
+     * @return
+     */
+    Order getOrderById(String orderId);
     /**
      * 获取该订单的商品
      * @param orderId

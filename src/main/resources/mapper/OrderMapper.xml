@@ -56,11 +56,20 @@
     <select id="getOrderById" parameterType="java.lang.String" resultMap="orderMap">
         select *
         from t_order
-        where idx_email = #{email}
-          and idx_NO = #{orderId}
+        where
+              <if test="email!=null">
+                  idx_email = #{email} and
+              </if>
+            idx_NO = #{orderId}
           and idx_delete = 1
     </select>
-
+    <select id="getOrder" parameterType="java.lang.String" resultMap="orderMap">
+        select *
+        from t_order
+        where
+        idx_NO = #{orderId}
+        and idx_delete = 1
+    </select>
     <select id="getOrderGoods" resultMap="cartMap" parameterType="java.lang.String">
         SELECT b.*, a.idx_count
         FROM `t_order_goods` a

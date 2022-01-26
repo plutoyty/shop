@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yty.dao.ShopMapper">
+    <resultMap id="shopMap" type="com.yty.entity.Shop">
+        <id property="id" column="pk_id"/>
+        <result property="name" column="idx_name"/>
+        <result property="head" column="idx_head"/>
+        <result property="userId" column="idx_userid"/>
+        <result property="creatDate" column="idx_creat_date"/>
+    </resultMap>
+    <resultMap id="ApplyMap" type="com.yty.Vo.store.ShopApply">
+        <id property="shop.id" column="pk_id"/>
+        <result property="shop.name" column="idx_name"/>
+        <result property="shop.head" column="idx_head"/>
+        <result property="shop.userId" column="userid"/>
+        <result property="shop.creatDate" column="idx_creat_date"/>
+        <result property="user.id" column="userid"/>
+        <result property="user.username" column="username"/>
+        <result property="user.email" column="idx_email"/>
+        <result property="user.head" column="userhead"/>
+    </resultMap>
+    <insert id="applyShop" parameterType="com.yty.entity.Shop">
+        insert into t_shop_apply
+            (idx_name, idx_head, idx_email, idx_creat_date)
+        values (#{shop.name}, #{shop.head}, #{email}, #{shop.creatDate})
+    </insert>
+
+    <select id="getAllApply" resultMap="ApplyMap">
+        select a.*, b.pk_id userid, b.idx_name username, b.idx_head userhead
+        from t_shop_apply a
+                 inner join user b on a.idx_email = b.idx_email;
+    </select>
+</mapper>

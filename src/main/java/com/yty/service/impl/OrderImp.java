@@ -7,6 +7,7 @@ import com.yty.entity.Order;
 import com.yty.service.OrderService;
 import com.yty.utils.DateUtil;
 import com.yty.utils.OrderNumUtil;
+import com.yty.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public class OrderImp implements OrderService {
 
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public Order creatOrder(String email, List<CartItem> list, Address address) {
@@ -38,6 +41,7 @@ public class OrderImp implements OrderService {
         order.setGoods(list);
         order.setDetail(address.getDetail());
         orderMapper.creatOrder(order,email);
+        redisUtil.set("order_"+order.getOrderId(),order.getOrderId(),1800);
         for(CartItem c:list){
             orderMapper.addGoods(c.getProduct().getId(),order.getOrderId(),String.valueOf(c.getCount()));
         }
@@ -57,6 +61,15 @@ public class OrderImp implements OrderService {
     @Override
     public boolean delete( String orderId) {
         return orderMapper.deleteOrder(orderId);
+    }
+
+    @Override
+    public Order getOrderById(String orderId) {
+        if (orderId==null || orderId.equals(""))
+        return null;
+        else {
+            return orderMapper.getOrder(orderId);
+        }
     }
 
     @Override
