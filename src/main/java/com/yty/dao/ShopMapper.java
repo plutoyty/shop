@@ -1,6 +1,8 @@
 package com.yty.dao;
 
 import com.yty.Vo.store.ShopApply;
+import com.yty.entity.Order;
+import com.yty.entity.Product;
 import com.yty.entity.Shop;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +25,17 @@ public interface ShopMapper {
      * @return
      */
     List<ShopApply> getAllApply();
+
+    /**
+     * 获取商品
+     * @param shopId
+     * @return
+     */
+    List<Product> getGoods(String shopId);
+
+    /**
+     * 获取售后订单
+     * @return
+     */
+    List<Order> getAfterOrder();
 }

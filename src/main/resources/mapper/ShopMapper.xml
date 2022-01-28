@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yty.dao.ShopMapper">
+
     <resultMap id="shopMap" type="com.yty.entity.Shop">
         <id property="id" column="pk_id"/>
         <result property="name" column="idx_name"/>
@@ -9,6 +10,7 @@
         <result property="userId" column="idx_userid"/>
         <result property="creatDate" column="idx_creat_date"/>
     </resultMap>
+
     <resultMap id="ApplyMap" type="com.yty.Vo.store.ShopApply">
         <id property="shop.id" column="pk_id"/>
         <result property="shop.name" column="idx_name"/>
@@ -20,6 +22,38 @@
         <result property="user.email" column="idx_email"/>
         <result property="user.head" column="userhead"/>
     </resultMap>
+
+    <resultMap id="productMap" type="com.yty.entity.Product">
+        <id column="pk_id" property="id"/>
+        <result property="img" column="idx_image"/>
+        <result property="price" column="idx_price"/>
+        <result property="oldPrice" column="idx_oldPrice"/>
+        <result property="title" column="idx_name"/>
+        <result property="subtitle" column="idx_subtitle"/>
+        <result property="shopId" column="idx_shopid"/>
+        <result property="category" column="idx_category"/>
+        <result property="sellCount" column="idx_sellcount"/>
+        <result property="repertory" column="idx_repertory"/>
+        <result property="status" column="idx_status"/>
+        <result property="hot" column="idx_hot"/>
+        <result property="date" column="idx_date"/>
+        <result property="categoryId" column="idx_category_id"/>
+    </resultMap>
+
+    <resultMap id="orderMap" type="com.yty.entity.Order">
+        <id column="idx_NO" property="orderId"/>
+        <result property="status" column="idx_order_status"/>
+        <result property="creatDate" column="idx_date"/>
+        <result property="province" column="idx_province"/>
+        <result property="city" column="idx_city"/>
+        <result property="region" column="idx_region"/>
+        <result property="name" column="idx_name"/>
+        <result property="tel" column="idx_tel"/>
+        <result property="sum" column="idx_total"/>
+        <result property="detail" column="idx_detail"/>
+        <result property="updateDate" column="idx_update_date"/>
+    </resultMap>
+
     <insert id="applyShop" parameterType="com.yty.entity.Shop">
         insert into t_shop_apply
             (idx_name, idx_head, idx_email, idx_creat_date)
@@ -30,5 +64,13 @@
         select a.*, b.pk_id userid, b.idx_name username, b.idx_head userhead
         from t_shop_apply a
                  inner join user b on a.idx_email = b.idx_email;
+    </select>
+
+    <select id="getGoods" parameterType="java.lang.String" resultMap="productMap">
+        select * from t_goods where idx_shopid=#{shopId} and idx_delete=1
+    </select>
+
+    <select id="getAfterOrder" resultMap="orderMap">
+        SELECT * FROM `t_order` where idx_order_status=6 or idx_order_status=7
     </select>
 </mapper>

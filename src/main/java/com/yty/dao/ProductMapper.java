@@ -97,4 +97,10 @@ public interface ProductMapper {
      * @return
      */
     List<Product> getSearchHome(@Param("title") String title,@Param("start") Integer start,@Param("end") Integer end);
+
+    /**
+     *
+     * @return
+     */
+    List<Product> query();
 }

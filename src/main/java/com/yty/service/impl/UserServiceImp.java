@@ -104,8 +104,10 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean adminBool(String id) {
-        return userMapper.admin(id).equals("1");
+    public boolean  adminBool(String id) {
+        String s = userMapper.admin(id);
+        boolean f =  s.equals("1") || s.equals("2");
+        return f;
     }
 
     @Override

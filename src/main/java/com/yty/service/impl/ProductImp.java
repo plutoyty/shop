@@ -4,6 +4,7 @@ import com.yty.dao.ProductMapper;
 import com.yty.entity.Product;
 import com.yty.service.ProductService;
 import com.yty.utils.DateUtil;
+import com.yty.utils.GoodsSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -13,6 +14,9 @@ public class ProductImp implements ProductService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private GoodsSearch goodsSearch;
 
     @Override
     public Product getProductInfo(String id) {
@@ -74,6 +78,13 @@ public class ProductImp implements ProductService {
         Integer end = start+Integer.valueOf(pageSize)+1;
         List<Product> list = productMapper.getSearchHome(title,start,end);
         return list;
+    }
+
+    @Override
+    public List<Product> query(String name) {
+//        goodsSearch.createIndex();
+        System.out.println(goodsSearch.searchData("12"));
+        return null;
     }
 
 

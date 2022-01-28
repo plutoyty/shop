@@ -2,6 +2,8 @@ package com.yty.service.impl;
 
 import com.yty.Vo.store.ShopApply;
 import com.yty.dao.ShopMapper;
+import com.yty.entity.Order;
+import com.yty.entity.Product;
 import com.yty.entity.Shop;
 import com.yty.service.ShopService;
 import com.yty.utils.DateUtil;
@@ -35,5 +37,18 @@ public class ShopImp implements ShopService {
     @Override
     public List<ShopApply> getAllApply() {
         return shopMapper.getAllApply();
+    }
+
+    @Override
+    public List<Product> getGoods(String shopId) {
+        if (shopId.equals("")){
+            return null;
+        }
+        return shopMapper.getGoods(shopId);
+    }
+
+    @Override
+    public List<Order> getAfterOrder() {
+        return shopMapper.getAfterOrder();
     }
 }

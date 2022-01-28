@@ -35,7 +35,7 @@ public class OrderImp implements OrderService {
         order.setCity(address.getCity());
         order.setProvince(address.getProvince());
         order.setRegion(address.getRegion());
-        order.setStatus("未支付");
+        order.setStatus("1");
         order.setSum(sum);
         order.setTel(address.getTel());
         order.setGoods(list);

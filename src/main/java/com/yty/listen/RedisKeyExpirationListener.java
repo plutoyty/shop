@@ -41,8 +41,8 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
         //从失效key中筛选代表订单失效的key
         if (key != null && key.startsWith("order_")) {
             Order order = orderService.getOrderById(key.substring(6));
-            if (order.getStatus().equals("未支付")){
-                orderService.updateStatus("已取消",order.getOrderId());
+            if (order.getStatus().equals("1")){
+                orderService.updateStatus("-1",order.getOrderId());
                 log.info("订单号为【" + key + "】超时未支付-自动修改为已取消状态");
             }
         }

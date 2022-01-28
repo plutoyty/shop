@@ -133,4 +133,9 @@
         </set>
         where pk_id=#{id}
     </update>
+
+    <select id="query" resultMap="productMap" >
+        select pk_id,idx_name,idx_subtitle from t_goods;
+    </select>
+
 </mapper>

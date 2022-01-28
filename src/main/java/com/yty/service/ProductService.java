@@ -74,4 +74,11 @@ public interface ProductService {
      * @return
      */
     List<Product> search(String title, String pageIndex, String pageSize);
+
+    /**
+     *
+     * @param name
+     * @return
+     */
+    List<Product> query(String name);
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yty.dao.CommentMapper">
+
+    <resultMap id="commentMap" type="com.yty.entity.Comment">
+        <id property="id" column="pk_id"/>
+        <result property="userId" column="idx_user_id"/>
+        <result property="goodsId" column="idx_goods_id"/>
+        <result property="reply" column="idx_reply_id"/>
+        <result property="date" column="idx_date"/>
+        <result property="text" column="idx_content"/>
+    </resultMap>
+    <insert id="sendComment" parameterType="com.yty.entity.Comment">
+        insert into t_goods_comment
+        (idx_user_id,idx_goods_id,idx_reply_id,idx_content,idx_date)
+        values (#{userId},#{goodsId},#{reply},#{text},#{date})
+    </insert>
+
+    <select id="getComments" parameterType="java.lang.String" resultMap="commentMap">
+        select * from t_goods_comment
+        where idx_delete=1 and idx_goods_id=#{goodsId}
+    </select>
+
+</mapper>
